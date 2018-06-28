@@ -22,7 +22,7 @@ usable Hash.
 
 ```ruby
 require('json_api_query_parser')
-JsonApiQueryParser.parseRequest("movies/5?include=actors,actors.agency&fields[movies]=title,year&fields[actors]=name")
+JsonApiQueryParser.parseRequest("movies/5?include=actors,actors.agency&fields[movies]=title,year&fields[actors]=name&page[limit]=20")
 ```
 
 ## Return data information
@@ -35,7 +35,8 @@ The Hash returned by the JsonApiQueryParser.parseRequest will always be the same
   :identifier=>"5", 
   :queryData=>{
     :include=>["actors", "actors.agency"], 
-    :fields=>{:movies=>["title", "year"], :actors=>["name"]}
+    :fields=>{:movies=>["title", "year"], :actors=>["name"]},
+    :page=>{"limit"=>"20"}
   }
 } 
 ```
