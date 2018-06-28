@@ -39,23 +39,12 @@ module JsonApiQueryParser
   end
 
   def self.parseEndpoint(endpointString, requestData)
-    requestSplit = trimSlashes(endpointString).split("/")
+    requestSplit = endpointString.split("/")
 
     requestData[:resourceType] = requestSplit[0]
     requestData[:identifier] = (requestSplit.length >= 2 ? requestSplit[1] : nil)
 
     requestData
-  end
-
-  def self.trimSlashes(input)
-    slashPattern = "/(^\/)|(\/$)/"
-    trimmed = input.gsub(slashPattern, "")
-
-    if slashPattern.match(trimmed)
-      trimSlashes(trimmed)
-    else
-      trimmed
-    end
   end
 
   def self.delegateToParser(query, requestData)
