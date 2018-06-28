@@ -1,5 +1,7 @@
 # JSON API query parser
 
+[![Build Status](https://travis-ci.org/g13ydson/json_api_query_parser.svg?branch=master)](https://travis-ci.org/g13ydson/json_api_query_parser)
+
 To be used for ruby projects that make use of [JSON API](http://jsonapi.org/)
 
 
