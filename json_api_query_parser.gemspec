@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["tavares.gleydson@gmail.com"]
 
   spec.summary       = %q{Gem to parse endpoint and its query parameters to a usable request object}
-  spec.homepage      = "https://github.com/g13ydson"
+  spec.homepage      = "https://github.com/g13ydson/json_api_query_parser"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
