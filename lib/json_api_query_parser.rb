@@ -28,23 +28,23 @@ module JsonApiQueryParser
     requestData
   end
 
-  def self.parseQueryParameters(queryString, requestDataSubset)
+  def self.parseQueryParameters(queryString, requestData)
     querySplit = queryString.split("&")
 
     querySplit.each do |query|
-      delegateToParser(query, requestDataSubset)
+      delegateToParser(query, requestData)
     end
 
-    requestDataSubset
+    requestData
   end
 
-  def self.parseEndpoint(endpointString, requestObject)
+  def self.parseEndpoint(endpointString, requestData)
     requestSplit = trimSlashes(endpointString).split("/")
 
-    requestObject[:resourceType] = requestSplit[0]
-    requestObject[:identifier] = (requestSplit.length >= 2 ? requestSplit[1] : nil)
+    requestData[:resourceType] = requestSplit[0]
+    requestData[:identifier] = (requestSplit.length >= 2 ? requestSplit[1] : nil)
 
-    requestObject
+    requestData
   end
 
   def self.trimSlashes(input)
@@ -58,22 +58,22 @@ module JsonApiQueryParser
     end
   end
 
-  def self.delegateToParser(query, requestDataSubset)
+  def self.delegateToParser(query, requestData)
     PARSE_PARAM.each do |functionName, _value|
       if query =~ PARSE_PARAM[functionName.to_sym]
-        requestDataSubset = send(functionName, query, requestDataSubset)
+        requestData = send(functionName, query, requestData)
       end
     end
   end
 
-  def self.parseInclude(includeString, requestDataSubset)
+  def self.parseInclude(includeString, requestData)
     targetString = includeString.split("=")[1]
-    requestDataSubset[:include] = targetString.split(",")
+    requestData[:include] = targetString.split(",")
 
-    requestDataSubset
+    requestData
   end
 
-  def self.parseFields(fieldsString, requestDataSubset)
+  def self.parseFields(fieldsString, requestData)
     targetResource, targetFields, targetFieldsString = ""
     fieldNameRegex = /^fields.*?\=(.*?)$/i
 
@@ -81,17 +81,17 @@ module JsonApiQueryParser
 
     targetFieldsString = fieldsString.scan(fieldNameRegex)
 
-    requestDataSubset[:fields][targetResource[0][0]] = !requestDataSubset[:fields][targetResource[0][0]] ? [] : targetResource[0][0]
+    requestData[:fields][targetResource[0][0]] = !requestData[:fields][targetResource[0][0]] ? [] : targetResource[0][0]
     targetFields = targetFieldsString[0][0].split(",")
 
     targetFields.each do |targetField|
-      requestDataSubset[:fields][targetResource[0][0]] << targetField
+      requestData[:fields][targetResource[0][0]] << targetField
     end
 
-    requestDataSubset
+    requestData
   end
 
-  def self.parsePage (pageString, requestDataSubset)
+  def self.parsePage (pageString, requestData)
     pageSettingKey, pageSettingValue = ""
     pageValueRegex = /^page.*?\=(.*?)$/i
 
@@ -99,8 +99,8 @@ module JsonApiQueryParser
 
     pageSettingValue = pageString.scan(pageValueRegex)
 
-    requestDataSubset[:page][pageSettingKey[0][0]] = pageSettingValue[0][0]
+    requestData[:page][pageSettingKey[0][0]] = pageSettingValue[0][0]
 
-    requestDataSubset
+    requestData
   end
 end
