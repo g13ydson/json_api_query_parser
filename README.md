@@ -9,13 +9,15 @@ To be used for ruby projects that make use of [JSON API](http://jsonapi.org/)
 $ gem install json_api_query_parser
 ```
 
+Or in the gemfile of the rails project
+
 ```ruby
 gem 'json_api_query_parser'
 ```
 
 ## Usage
 
-Require the gem 'JsonApiQueryParser' into your application and use the 'parseRequest' method to convert the request.url to an easy
+Require the gem 'json_api_query_parser' into your application and use the 'parseRequest' method to convert the request.url to an easy
 usable Hash.
 
 ```ruby
