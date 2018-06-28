@@ -3,7 +3,8 @@ require "json_api_query_parser/version"
 module JsonApiQueryParser
   PARSE_PARAM = {
     parseInclude: /^include\=(.*?)/i,
-    parseFields: /^fields\[(.*?)\]\=.*?$/i
+    parseFields: /^fields\[(.*?)\]\=.*?$/i,
+    parsePage: /^page\[(.*?)\]\=.*?$/i
   }.freeze
 
   def self.parseRequest(url)
@@ -12,12 +13,13 @@ module JsonApiQueryParser
       identifier: nil,
       queryData: {
         include: [],
-        fields: {}
+        fields: {},
+        page: {}
       }
     }
 
     urlSplit = url.split("?")
-    requestData = parseEndpoint(urlSplit[0], requestData)
+    requestData = parseEndpoint(urlSplit[0], requestData) if urlSplit[0]
 
     if urlSplit[1]
       requestData[:queryData] = parseQueryParameters(urlSplit[1], requestData[:queryData])
@@ -36,24 +38,24 @@ module JsonApiQueryParser
     requestDataSubset
   end
 
-  def self.trimSlashes(input)
-    slashPattern = "/(^\/)|(\/$)/"
-    trimmed = input.gsub(slashPattern, "")
-
-    if slashPattern.match(trimmed)
-      JsonApiQueryParser.trimSlashes(trimmed)
-    else
-      trimmed
-    end
-  end
-
   def self.parseEndpoint(endpointString, requestObject)
-    requestSplit = JsonApiQueryParser.trimSlashes(endpointString).split("/")
+    requestSplit = trimSlashes(endpointString).split("/")
 
     requestObject[:resourceType] = requestSplit[0]
     requestObject[:identifier] = (requestSplit.length >= 2 ? requestSplit[1] : nil)
 
     requestObject
+  end
+
+  def self.trimSlashes(input)
+    slashPattern = "/(^\/)|(\/$)/"
+    trimmed = input.gsub(slashPattern, "")
+
+    if slashPattern.match(trimmed)
+      trimSlashes(trimmed)
+    else
+      trimmed
+    end
   end
 
   def self.delegateToParser(query, requestDataSubset)
@@ -79,12 +81,25 @@ module JsonApiQueryParser
 
     targetFieldsString = fieldsString.scan(fieldNameRegex)
 
-    requestDataSubset[:fields][targetResource[0][0].to_sym] = !requestDataSubset[:fields][targetResource[0][0].to_sym] ? [] : targetResource[0][0].to_sym
+    requestDataSubset[:fields][targetResource[0][0]] = !requestDataSubset[:fields][targetResource[0][0]] ? [] : targetResource[0][0]
     targetFields = targetFieldsString[0][0].split(",")
 
     targetFields.each do |targetField|
-      requestDataSubset[:fields][targetResource[0][0].to_sym] << targetField
+      requestDataSubset[:fields][targetResource[0][0]] << targetField
     end
+
+    requestDataSubset
+  end
+
+  def self.parsePage (pageString, requestDataSubset)
+    pageSettingKey, pageSettingValue = ""
+    pageValueRegex = /^page.*?\=(.*?)$/i
+
+    pageSettingKey = pageString.scan(PARSE_PARAM[:parsePage])
+
+    pageSettingValue = pageString.scan(pageValueRegex)
+
+    requestDataSubset[:page][pageSettingKey[0][0]] = pageSettingValue[0][0]
 
     requestDataSubset
   end
