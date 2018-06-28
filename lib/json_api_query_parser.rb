@@ -44,7 +44,7 @@ module JsonApiQueryParser
     requestSplit = endpointString.split("/")
 
     requestData[:resourceType] = requestSplit[0]
-    requestData[:identifier] = (requestSplit.length >= 2 ? requestSplit[1] : nil)
+    requestData[:identifier] = requestSplit.length >= 2 ? requestSplit[1] : nil
 
     requestData
   end
