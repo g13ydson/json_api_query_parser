@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Gleydson Tavares"]
   spec.email         = ["tavares.gleydson@gmail.com"]
 
-  spec.summary       = %q{Gem to parse endpoint and its query parameters to a usable request object}
+  spec.summary       = %q{Parse JSON API endpoint and its query parameters to a usable Hash}
   spec.homepage      = "https://github.com/g13ydson/json_api_query_parser"
   spec.license       = "MIT"
 
