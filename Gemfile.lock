@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    json_api_query_parser (0.1.1)
+    json_api_query_parser (0.1.2)
 
 GEM
   remote: https://rubygems.org/
