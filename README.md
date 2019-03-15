@@ -19,23 +19,23 @@ gem 'json_api_query_parser'
 
 ## Usage
 
-Require the gem 'json_api_query_parser' into your application and use the 'parseRequest' method to convert the request.url to an easy
+Require the gem 'json_api_query_parser' into your application and use the 'parse_request' method to convert the request.url to an easy
 usable Hash.
 
 ```ruby
 require('json_api_query_parser')
-JsonApiQueryParser.parseRequest("movies/5?include=actors,actors.agency&fields[movies]=title,year&fields[actors]=name&page[limit]=20")
+JsonApiQueryParser.parse_request("movies/5?include=actors,actors.agency&fields[movies]=title,year&fields[actors]=name&page[limit]=20")
 ```
 
 ## Return data information
 
-The Hash returned by the JsonApiQueryParser.parseRequest will always be the same structure.
+The Hash returned by the JsonApiQueryParser.parse_request will always be the same structure.
 
 ```ruby
 {
-  :resourceType=>"movies", 
+  :resource_type=>"movies", 
   :identifier=>"5", 
-  :queryData=>{
+  :query_data=>{
     :include=>["actors", "actors.agency"], 
     :fields=>{:movies=>["title", "year"], :actors=>["name"]},
     :page=>{"limit"=>"20"}
