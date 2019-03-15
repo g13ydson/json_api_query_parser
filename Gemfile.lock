@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    json_api_query_parser (0.1.2)
+    json_api_query_parser (0.1.3)
 
 GEM
   remote: https://rubygems.org/
@@ -40,4 +40,4 @@ DEPENDENCIES
   simplecov
 
 BUNDLED WITH
-   1.16.1
+   1.17.3
